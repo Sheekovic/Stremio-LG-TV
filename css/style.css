@@ -1,0 +1,28 @@
+/* Bewusst so schlank wie möglich gehalten:
+   keine Transitions, keine Animationen, kein Web-Font-Loading,
+   nichts, was auf einem TV mit wenig RAM zusätzlichen
+   Compositing-/Repaint-Overhead erzeugt. */
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: #000; /* verhindert weißes Aufblitzen beim Laden */
+  overflow: hidden;  /* keine Scrollbars, kein Scroll-Repaint */
+}
+
+#stremio-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  border: none;
+  background: #000;
+  /* keine box-shadow/filter/opacity-Transitions -> spart GPU/RAM */
+}

@@ -1,0 +1,17 @@
+{
+  "id": "org.balazs.stremio-wrapper",
+  "version": "1.0.0",
+  "vendor": "Balazs",
+  "type": "web",
+  "main": "index.html",
+  "title": "Stremio",
+  "icon": "icon.png",
+  "largeIcon": "icon.png",
+  "iconColor": "#0f0226",
+  "splashBackground": "icon.png",
+  "resolution": "1920x1080",
+  "disableBackHistoryAPI": true,
+  "requiredPermissions": [
+    "internet"
+  ]
+}

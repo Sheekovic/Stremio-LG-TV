@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1920, height=1080, user-scalable=no">
+  <title>Stremio TV</title>
+
+  <!-- Verbindung zu Stremio + bekanntem Addon-Server schon vorab aufbauen,
+       damit DNS/TLS nicht erst beginnt, wenn das iframe selbst navigiert.
+       Spart auf TVs mit langsamem DNS-Resolver oft mehrere Sekunden. -->
+  <link rel="preconnect" href="https://tv.strem.io">
+  <link rel="dns-prefetch" href="https://tv.strem.io">
+  <link rel="preconnect" href="https://v3-cinemeta.strem.io" crossorigin>
+  <link rel="dns-prefetch" href="https://v3-cinemeta.strem.io">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- tabindex="-1" macht das iframe fokussierbar per JS,
+       ohne dass es im normalen Tab-Fluss auftaucht -->
+  <iframe
+    id="stremio-frame"
+    src="https://tv.strem.io"
+    tabindex="-1"
+    allow="autoplay; fullscreen; encrypted-media"
+    allowfullscreen>
+  </iframe>
+
+  <script src="main.js"></script>
+</body>
+</html>
