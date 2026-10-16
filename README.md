@@ -1,12 +1,12 @@
 # Stremio-LG-TV
 
-A lightweight LG webOS launcher for the official [Stremio TV web interface](https://tv.strem.io/). Version **1.1.1** is a test build with a direct hosted-app launch and an optional recovery wrapper. It does not bundle Stremio or replace its player.
+A lightweight LG webOS launcher for the official [Stremio TV web interface](https://tv.strem.io/). Version **1.1.2** is a test build with a direct hosted-app launch and an optional recovery wrapper. It does not bundle Stremio or replace its player.
 
 ## Install the test build
 
 Download the IPK from [GitHub Releases](https://github.com/Sheekovic/Stremio-LG-TV/releases), then install it with [webOS TV Device Manager](https://github.com/webosbrew/dev-manager-desktop) and Developer Mode enabled on the TV. For a local build, select:
 
-`dist/org.balazs.stremio-wrapper_1.1.1_all.ipk`
+`dist/org.balazs.stremio-wrapper_1.1.2_all.ipk`
 
 The app ID is unchanged from 1.0.0, so install it as an update. Keep the original IPK for reference. The new package contains only application resources and the license; the original 1.0.0 IPK also contained Git metadata.
 
@@ -14,17 +14,17 @@ The app ID is unchanged from 1.0.0, so install it as an update. Keep the origina
 
 ## Startup and recovery
 
-The launcher is in Arabic and opens Stremio directly after three seconds. Press any arrow to cancel automatic opening and choose an option with the arrows and OK:
+The launcher and recovery interface are English-only. Stremio opens directly after three seconds. Press any arrow to cancel automatic opening and choose an option with the arrows and OK:
 
-- **فتح Stremio** - direct launch, without an iframe.
-- **وضع إصلاح التحميل** - keep the local recovery controls around an embedded Stremio page.
-- **خروج** - request the platform Back/exit action.
+- **Open Stremio** - direct launch, without an iframe.
+- **Recovery mode** - keep the local recovery controls around an embedded Stremio page.
+- **Exit** - request the platform Back/exit action.
 
 If the TV reports that it is offline, automatic opening waits for a network connection. This is a network-interface hint, not a server/DNS/TLS health check. No extra requests are sent to Stremio's API or catalog as startup probes.
 
-In recovery mode, the controls stay visible even after the page loads. When you can see Stremio's menus, select **متابعة** to give its frame the remote's real keyboard input. If the logo remains, use **إعادة المحاولة** to recreate its browsing context, or **فتح مباشر** to leave the wrapper. A message appears after 45 seconds; it never forces a reload during a slow startup or playback.
+In recovery mode, the controls stay visible even after the page loads. When you can see Stremio's menus, select **Continue** to give its frame the remote's real keyboard input. If the logo remains, use **Retry** to recreate its browsing context, or **Open directly** to leave the wrapper. A message appears after 45 seconds; it never forces a reload during a slow startup or playback.
 
-You can reopen recovery with the Magic Remote pointer using **إصلاح التحميل**. With a directional remote, leave the app and return to it; visibility/relaunch events reopen the controls without reloading Stremio. This lifecycle behavior needs verification on the TV. Parent-page key handlers cannot receive keys while the foreign iframe has focus.
+You can reopen recovery with the Magic Remote pointer using **Startup recovery**. With a directional remote, leave the app and return to it; visibility/relaunch events reopen the controls without reloading Stremio. This lifecycle behavior needs verification on the TV. Parent-page key handlers cannot receive keys while the foreign iframe has focus.
 
 Direct launch unloads the local launcher. Its recovery controls and timers no longer exist after handover. If Stremio hangs in this mode, fully close the app, reopen it, press an arrow during the three-second startup window, and select recovery. Returning from Home may resume the existing app rather than restart the launcher.
 
@@ -33,7 +33,7 @@ Changing from iframe to direct launch changes the storage context and may requir
 ## What changed in 1.1.x
 
 - Direct hosted-app handover is the default, with no nested frame during normal use.
-- Added a small, remote-navigable Arabic launcher and manual recovery controls.
+- Added a small, remote-navigable launcher and manual recovery controls.
 - Replaced ineffective iframe-error retries with visible, user-controlled recovery.
 - Removed three redundant startup fetches, leaving only a connection hint for the UI host.
 - Added online/offline and foreground/relaunch handling in the local wrapper.
@@ -41,6 +41,7 @@ Changing from iframe to direct launch changes the storage context and may requir
 - Removed the stretched square splash background and used a solid splash color.
 - Added an SDK-free, allowlisted, verified IPK build with SHA-256 output.
 - Version 1.1.1 keeps the slow-start warning visible if a failed or delayed iframe load arrives after the timeout.
+- Version 1.1.2 makes all launcher and recovery text English-only and aligns remote navigation with the left-to-right layout.
 
 ## Research and compatibility (2026-10-16)
 
@@ -66,8 +67,8 @@ To publish a new version, update `version` in appinfo.json, commit the source, t
 
 ```powershell
 git push origin main
-git tag v1.1.1
-git push origin v1.1.1
+git tag v1.1.2
+git push origin v1.1.2
 ```
 
 The tag must equal `v` followed by the manifest version. Existing releases and assets are never overwritten. Manual runs build artifacts only. Publishing uses GitHub's built-in token, so no personal access token or extra repository secret is needed. Release builds remain marked experimental until physical TV acceptance is complete.
@@ -91,7 +92,7 @@ These tests use simulated remote pages and cover direct handover, offline startu
 
 ## TV acceptance still required
 
-1. Install 1.1.1 and verify cold starts repeatedly, then repeat after standby and Home/app switching.
+1. Install 1.1.2 and verify cold starts repeatedly, then repeat after standby and Home/app switching.
 2. Compare direct and recovery modes; record which one stalls and whether the Stremio menus ever appear.
 3. Start with the network disconnected, restore it, and check that retry is accessible.
 4. Verify arrows, OK, short Back, platform exit, and Magic Remote pointer with Stremio focused.

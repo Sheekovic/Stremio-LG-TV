@@ -30,7 +30,7 @@
   function pauseStartup() {
     autoStart = false;
     clearStartup();
-    hint.textContent = 'اختر بالأسهم واضغط OK. وضع الإصلاح يتيح إعادة تحميل الصفحة يدويًا.';
+    hint.textContent = 'Choose with the arrows and press OK. Recovery mode lets you retry loading the page.';
   }
   function offline() {
     // A true onLine value is not proof of Internet access.
@@ -38,8 +38,8 @@
   }
   function updateNetwork() {
     status.textContent = offline() ?
-      'التلفزيون غير متصل بالشبكة. وصّل الإنترنت ثم اختر فتح Stremio.' :
-      'جاهز لتشغيل Stremio.';
+      'The TV is offline. Connect to the network, then choose Open Stremio.' :
+      'Ready to open Stremio.';
   }
   function scheduleStartup() {
     clearStartup();
@@ -54,7 +54,7 @@
     mode = 'leaving';
     panelOpen = false;
     if (frame) { frame.parentNode.removeChild(frame); frame = null; }
-    status.textContent = 'جارٍ فتح Stremio…';
+    status.textContent = 'Opening Stremio...';
     // Hosted-app handover gives Stremio first-party storage and keyboard input.
     // The launcher unloads here and cannot monitor the remote UI.
     window.location.replace(URL);
@@ -87,7 +87,7 @@
     launcher.hidden = true;
     showPanel();
     if (offline()) {
-      recoveryStatus.textContent = 'لا يوجد اتصال بالشبكة. بعد الاتصال اختر إعادة المحاولة.';
+      recoveryStatus.textContent = 'No network connection. Connect, then choose Retry.';
       return;
     }
     // A fresh browsing context resets JS, while preserving account storage.
@@ -101,17 +101,17 @@
     frame.addEventListener('load', function () {
       // This may also be an error document or a stalled SPA.
       if (panelOpen && !slow) {
-        recoveryStatus.textContent = 'انتهى طلب الصفحة. لو ظهرت القوائم اختر متابعة؛ لو الشعار معلّق جرّب إعادة المحاولة.';
+        recoveryStatus.textContent = 'The page request finished. If the menus appear, choose Continue. If the logo remains, choose Retry.';
       }
       focusFrame();
     });
-    recoveryStatus.textContent = 'جارٍ تحميل Stremio… يمكنك إعادة المحاولة أو الفتح المباشر.';
+    recoveryStatus.textContent = 'Loading Stremio... You can choose Retry or Open directly.';
     frame.src = URL;
     document.body.insertBefore(frame, document.body.firstChild);
     slowTimer = window.setTimeout(function () {
       slow = true;
       if (mode === 'recovery' && panelOpen) {
-        recoveryStatus.textContent = 'التحميل استغرق أكثر من ٤٥ ثانية. لو القوائم لم تظهر، جرّب إعادة المحاولة أو الفتح المباشر.';
+        recoveryStatus.textContent = 'Loading has taken more than 45 seconds. If the menus have not appeared, choose Retry or Open directly.';
       }
     }, 45000);
   }
@@ -173,8 +173,8 @@
     index = buttons.indexOf(document.activeElement.id);
     if (code >= 37 && code <= 40) {
       event.preventDefault();
-      // The button rows run right-to-left.
-      index = (Math.max(index, 0) + (code === 37 || code === 40 ? 1 : buttons.length - 1)) % buttons.length;
+      // Match the left-to-right button order on screen.
+      index = (Math.max(index, 0) + (code === 39 || code === 40 ? 1 : buttons.length - 1)) % buttons.length;
       focus(buttons[index]);
     } else if (code === 13) {
       event.preventDefault();
@@ -189,13 +189,13 @@
     if (mode === 'launcher') { updateNetwork(); }
     // A transient drop must not reload or cover a playing video.
     if (mode === 'recovery' && panelOpen) {
-      recoveryStatus.textContent = 'انقطع الاتصال. وصّل الشبكة ثم اختر إعادة المحاولة.';
+      recoveryStatus.textContent = 'Connection lost. Reconnect, then choose Retry.';
     }
   });
   window.addEventListener('online', function () {
     if (mode === 'launcher') { updateNetwork(); scheduleStartup(); }
     if (mode === 'recovery' && panelOpen) {
-      recoveryStatus.textContent = 'عادت الشبكة. اختر إعادة المحاولة إذا لم تظهر القوائم.';
+      recoveryStatus.textContent = 'The network is back. Choose Retry if the menus have not appeared.';
     }
   });
   document.addEventListener('visibilitychange', function () {

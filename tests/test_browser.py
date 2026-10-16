@@ -49,7 +49,7 @@ class BrowserTests(unittest.TestCase):
 
     def recovery(self):
         self.launch()
-        self.page.keyboard.press('ArrowLeft')
+        self.page.keyboard.press('ArrowRight')
         expect(self.page.locator('#recovery')).to_be_focused()
         self.page.keyboard.press('Enter')
         expect(self.page.locator('#recovery-panel')).to_be_visible()
@@ -66,17 +66,17 @@ class BrowserTests(unittest.TestCase):
 
     def test_remote_navigation_pauses_autostart(self):
         self.launch()
-        self.page.keyboard.press('ArrowLeft')
+        self.page.keyboard.press('ArrowRight')
         self.page.clock.fast_forward(60000)
         expect(self.page.locator('#recovery')).to_be_focused()
         self.assertEqual(self.loads, 0)
-        self.page.keyboard.press('ArrowRight')
+        self.page.keyboard.press('ArrowLeft')
         expect(self.page.locator('#open')).to_be_focused()
 
     def test_offline_start_remains_recoverable(self):
         self.launch(offline=True)
         self.page.clock.fast_forward(60000)
-        expect(self.page.locator('#status')).to_contain_text('غير متصل')
+        expect(self.page.locator('#status')).to_contain_text('offline')
         self.assertEqual(self.loads, 0)
         self.page.locator('#open').click()
         self.assertEqual(self.loads, 0)
@@ -95,9 +95,9 @@ class BrowserTests(unittest.TestCase):
         self.recovery()
         expect(self.page.locator('#recovery-panel')).to_be_visible()
         expect(self.page.locator('#continue')).to_be_focused()
-        expect(self.page.locator('#recovery-status')).to_contain_text('لو ظهرت القوائم')
+        expect(self.page.locator('#recovery-status')).to_contain_text('If the menus appear')
         self.page.clock.fast_forward(46000)
-        expect(self.page.locator('#recovery-status')).to_contain_text('٤٥')
+        expect(self.page.locator('#recovery-status')).to_contain_text('45 seconds')
         self.assertEqual(self.loads, 1)  # No destructive automatic retries.
 
     def test_failed_iframe_keeps_retry_controls(self):
@@ -107,7 +107,7 @@ class BrowserTests(unittest.TestCase):
         self.page.locator('#recovery').click()
         self.page.clock.fast_forward(46000)
         expect(self.page.locator('#retry')).to_be_visible()
-        expect(self.page.locator('#recovery-status')).to_contain_text('٤٥')
+        expect(self.page.locator('#recovery-status')).to_contain_text('45 seconds')
         self.page.locator('#home').click()
         expect(self.page.locator('#open')).to_be_focused()
 
@@ -115,7 +115,7 @@ class BrowserTests(unittest.TestCase):
         self.recovery()
         self.page.clock.fast_forward(46000)
         self.page.locator('#stremio-frame').dispatch_event('load')
-        expect(self.page.locator('#recovery-status')).to_contain_text('٤٥')
+        expect(self.page.locator('#recovery-status')).to_contain_text('45 seconds')
         expect(self.page.locator('#retry')).to_be_visible()
         self.assertEqual(self.loads, 1)
 
@@ -170,7 +170,7 @@ class BrowserTests(unittest.TestCase):
     def test_recovery_offline_can_return_to_launcher(self):
         self.launch(offline=True)
         self.page.locator('#recovery').click()
-        expect(self.page.locator('#recovery-status')).to_contain_text('لا يوجد اتصال')
+        expect(self.page.locator('#recovery-status')).to_contain_text('No network connection')
         self.page.locator('#continue').click()
         expect(self.page.locator('#recovery-panel')).to_be_visible()
         self.page.locator('#home').click()
