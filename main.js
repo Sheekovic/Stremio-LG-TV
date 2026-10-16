@@ -80,6 +80,7 @@
     focusFrame();
   }
   function startRecovery() {
+    var slow = false;
     pauseStartup();
     window.clearTimeout(slowTimer);
     mode = 'recovery';
@@ -99,7 +100,7 @@
     frame.setAttribute('allowfullscreen', '');
     frame.addEventListener('load', function () {
       // This may also be an error document or a stalled SPA.
-      if (panelOpen) {
+      if (panelOpen && !slow) {
         recoveryStatus.textContent = 'انتهى طلب الصفحة. لو ظهرت القوائم اختر متابعة؛ لو الشعار معلّق جرّب إعادة المحاولة.';
       }
       focusFrame();
@@ -108,6 +109,7 @@
     frame.src = URL;
     document.body.insertBefore(frame, document.body.firstChild);
     slowTimer = window.setTimeout(function () {
+      slow = true;
       if (mode === 'recovery' && panelOpen) {
         recoveryStatus.textContent = 'التحميل استغرق أكثر من ٤٥ ثانية. لو القوائم لم تظهر، جرّب إعادة المحاولة أو الفتح المباشر.';
       }

@@ -1,12 +1,12 @@
 # Stremio-LG-TV
 
-A lightweight LG webOS launcher for the official [Stremio TV web interface](https://tv.strem.io/). Version **1.1.0** is a test build with a direct hosted-app launch and an optional recovery wrapper. It does not bundle Stremio or replace its player.
+A lightweight LG webOS launcher for the official [Stremio TV web interface](https://tv.strem.io/). Version **1.1.1** is a test build with a direct hosted-app launch and an optional recovery wrapper. It does not bundle Stremio or replace its player.
 
 ## Install the test build
 
 Download the IPK from [GitHub Releases](https://github.com/Sheekovic/Stremio-LG-TV/releases), then install it with [webOS TV Device Manager](https://github.com/webosbrew/dev-manager-desktop) and Developer Mode enabled on the TV. For a local build, select:
 
-`dist/org.balazs.stremio-wrapper_1.1.0_all.ipk`
+`dist/org.balazs.stremio-wrapper_1.1.1_all.ipk`
 
 The app ID is unchanged from 1.0.0, so install it as an update. Keep the original IPK for reference. The new package contains only application resources and the license; the original 1.0.0 IPK also contained Git metadata.
 
@@ -30,7 +30,7 @@ Direct launch unloads the local launcher. Its recovery controls and timers no lo
 
 Changing from iframe to direct launch changes the storage context and may require signing in again. The wrapper does not clear account data or cache. Retry resets the page's JavaScript context; it does not clear the TV's HTTP cache.
 
-## What changed in 1.1.0
+## What changed in 1.1.x
 
 - Direct hosted-app handover is the default, with no nested frame during normal use.
 - Added a small, remote-navigable Arabic launcher and manual recovery controls.
@@ -40,6 +40,7 @@ Changing from iframe to direct launch changes the storage context and may requir
 - Removed forced focus on every window-focus event; focus is transferred at explicit UI and lifecycle transitions.
 - Removed the stretched square splash background and used a solid splash color.
 - Added an SDK-free, allowlisted, verified IPK build with SHA-256 output.
+- Version 1.1.1 keeps the slow-start warning visible if a failed or delayed iframe load arrives after the timeout.
 
 ## Research and compatibility (2026-10-16)
 
@@ -65,8 +66,8 @@ To publish a new version, update `version` in appinfo.json, commit the source, t
 
 ```powershell
 git push origin main
-git tag v1.1.0
-git push origin v1.1.0
+git tag v1.1.1
+git push origin v1.1.1
 ```
 
 The tag must equal `v` followed by the manifest version. Existing releases and assets are never overwritten. Manual runs build artifacts only. Publishing uses GitHub's built-in token, so no personal access token or extra repository secret is needed. Release builds remain marked experimental until physical TV acceptance is complete.
@@ -90,7 +91,7 @@ These tests use simulated remote pages and cover direct handover, offline startu
 
 ## TV acceptance still required
 
-1. Install 1.1.0 and verify cold starts repeatedly, then repeat after standby and Home/app switching.
+1. Install 1.1.1 and verify cold starts repeatedly, then repeat after standby and Home/app switching.
 2. Compare direct and recovery modes; record which one stalls and whether the Stremio menus ever appear.
 3. Start with the network disconnected, restore it, and check that retry is accessible.
 4. Verify arrows, OK, short Back, platform exit, and Magic Remote pointer with Stremio focused.

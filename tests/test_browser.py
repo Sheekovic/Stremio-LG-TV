@@ -111,6 +111,14 @@ class BrowserTests(unittest.TestCase):
         self.page.locator('#home').click()
         expect(self.page.locator('#open')).to_be_focused()
 
+    def test_late_load_does_not_overwrite_slow_start_message(self):
+        self.recovery()
+        self.page.clock.fast_forward(46000)
+        self.page.locator('#stremio-frame').dispatch_event('load')
+        expect(self.page.locator('#recovery-status')).to_contain_text('٤٥')
+        expect(self.page.locator('#retry')).to_be_visible()
+        self.assertEqual(self.loads, 1)
+
     def test_manual_retry_creates_new_context(self):
         self.recovery()
         self.page.frame_locator('#stremio-frame').locator('#remote').evaluate('(e) => e.dataset.marker = "old"')
