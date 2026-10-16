@@ -91,7 +91,7 @@ jobs:
           Includes an English startup interface, direct hosted-app launch and recovery mode with manual retry.
 
           Automated browser tests and package validation passed on GitHub Actions.
-          Physical LG TV startup, standby/resume, remote Back behavior and video playback still require device testing.
+          Broader testing across LG TV models, standby/resume scenarios, remote Back behavior and media formats remains open.
           Changing launch modes may require signing in again.
           EOF
           gh release create "$RELEASE_TAG" dist/*.ipk dist/*.sha256 \

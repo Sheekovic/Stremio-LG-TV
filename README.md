@@ -4,13 +4,13 @@ A lightweight LG webOS launcher for the official [Stremio TV web interface](http
 
 ## Install the test build
 
-Download the IPK from [GitHub Releases](https://github.com/Sheekovic/Stremio-LG-TV/releases), then install it with [webOS TV Device Manager](https://github.com/webosbrew/dev-manager-desktop) and Developer Mode enabled on the TV. For a local build, select:
+Download the IPK from this repository's Releases page, then install it with [webOS TV Device Manager](https://github.com/webosbrew/dev-manager-desktop) and Developer Mode enabled on the TV. For a local build, select:
 
 `dist/org.balazs.stremio-wrapper_1.1.2_all.ipk`
 
 The app ID is unchanged from 1.0.0, so install it as an update. Keep the original IPK for reference. The new package contains only application resources and the license; the original 1.0.0 IPK also contained Git metadata.
 
-**This build has not been installed or tested on a physical LG TV.** Browser verification does not establish native Back behavior, playback, codec support, or a fix for the reported intermittent logo hang.
+**The reporter successfully tested version 1.1.2 on a physical LG OLED55CS TV.** Broader testing across webOS versions, standby/resume scenarios, remote Back behavior and media formats remains open.
 
 ## Startup and recovery
 
@@ -45,7 +45,7 @@ Changing from iframe to direct launch changes the storage context and may requir
 
 ## Research and compatibility (2026-10-16)
 
-The reported model is **OLED55CS5BA.DFUQLWE**. LG lists the OLED55CS family among its [2022 models](https://www.lg.com/au/care-accessories/tvs/stand-wall-mount/olw480b/). Its exact installed firmware/webOS version has not been read from the TV. The original README targeted pre-2020 TVs; that is not the appropriate assumption for this device.
+The startup report and successful manual test concern an **LG OLED55CS** TV. LG lists the OLED55CS family among its [2022 models](https://www.lg.com/au/care-accessories/tvs/stand-wall-mount/olw480b/). Its exact installed firmware/webOS version has not been read from the TV. Compatibility with pre-2020 devices remains to be established separately.
 
 | Evidence | Consequence |
 | --- | --- |
@@ -55,7 +55,7 @@ The reported model is **OLED55CS5BA.DFUQLWE**. LG lists the OLED55CS family amon
 | LG documents [lifecycle resume/relaunch](https://webostv.developer.lge.com/develop/guides/app-lifecycle-management) and [Back handling](https://webostv.developer.lge.com/develop/guides/back-button). | Preserve the running frame on resume. Keep handlesRelaunch false so LG brings the app forward automatically. Native Back must be tested with Stremio focused. |
 | Stremio [announced the official LG app's return for 2020+ models in August 2026](https://blog.stremio.com/stremio-for-lg-tv-is-back-2020-models-including-2026-models/). | An official app is an option for this TV family where the store region supports it. Availability on this particular TV has not been checked. |
 
-The original hang has **not** been reproduced on the user's television. Remaining causes include network/DNS/TLS, a retained app after standby, remote Stremio initialization, and the TV's runtime/storage behavior. The wrapper cannot inspect or repair a foreign page's JavaScript, login state, catalog loading, or player internals.
+The reporter confirms a successful manual TV test after the startup changes. The original intermittent hang has not been isolated to a single cause. Possible causes include network/DNS/TLS, a retained app after standby, remote Stremio initialization, and the TV's runtime/storage behavior. The wrapper cannot inspect or repair a foreign page's JavaScript, login state, catalog loading, or player internals.
 
 A deeper webOS port would require access to the TV's Web Inspector and a separately scoped Stremio UI/player integration. Wrapping the remote page does not add codec, HDR, audio-track, subtitle, or DRM capabilities.
 
@@ -90,7 +90,9 @@ python -m unittest discover -s tests -v
 
 These tests use simulated remote pages and cover direct handover, offline startup, network restoration, missing/failed loads, slow initialization, manual retry, actual keyboard delivery into a foreign frame, recovery-to-direct handover, foreground/relaunch, native exit API selection, and 1080p layout. The screenshots in artifacts/ are local development output.
 
-## TV acceptance still required
+## Further TV validation
+
+Version 1.1.2 has a successful reporter-confirmed manual test on LG OLED55CS. The following scenarios have not been confirmed individually and remain useful for broader device qualification:
 
 1. Install 1.1.2 and verify cold starts repeatedly, then repeat after standby and Home/app switching.
 2. Compare direct and recovery modes; record which one stalls and whether the Stremio menus ever appear.
