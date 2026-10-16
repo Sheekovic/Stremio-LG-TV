@@ -1,31 +1,39 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=1920, height=1080, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Stremio TV</title>
-
-  <!-- Verbindung zu Stremio + bekanntem Addon-Server schon vorab aufbauen,
-       damit DNS/TLS nicht erst beginnt, wenn das iframe selbst navigiert.
-       Spart auf TVs mit langsamem DNS-Resolver oft mehrere Sekunden. -->
   <link rel="preconnect" href="https://tv.strem.io">
   <link rel="dns-prefetch" href="https://tv.strem.io">
-  <link rel="preconnect" href="https://v3-cinemeta.strem.io" crossorigin>
-  <link rel="dns-prefetch" href="https://v3-cinemeta.strem.io">
-
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!-- tabindex="-1" macht das iframe fokussierbar per JS,
-       ohne dass es im normalen Tab-Fluss auftaucht -->
-  <iframe
-    id="stremio-frame"
-    src="https://tv.strem.io"
-    tabindex="-1"
-    allow="autoplay; fullscreen; encrypted-media"
-    allowfullscreen>
-  </iframe>
-
+  <main id="launcher">
+    <img class="logo" src="icon.png" alt="" width="96" height="96">
+    <h1>Stremio</h1>
+    <p id="status" role="status" aria-live="polite">جارٍ الاستعداد للتشغيل…</p>
+    <p id="hint">يفتح تلقائيًا خلال ٣ ثوانٍ. اضغط أي سهم لإظهار الخيارات.</p>
+    <div id="actions" role="group" aria-label="خيارات التشغيل">
+      <button id="open" type="button">فتح Stremio</button>
+      <button id="recovery" type="button">وضع إصلاح التحميل</button>
+      <button id="exit" type="button">خروج</button>
+    </div>
+    <p class="note">لو التحميل بيقف عند الشعار، جرّب وضع الإصلاح عند فتح التطبيق.</p>
+  </main>
+  <section id="recovery-panel" hidden aria-label="إصلاح التحميل">
+    <p id="recovery-status" role="status" aria-live="polite">جارٍ تحميل Stremio…</p>
+    <p>عندما تظهر القوائم، اختر «متابعة». لو الشعار معلّق، اختر «إعادة المحاولة» أو «فتح مباشر».</p>
+    <div role="group" aria-label="أدوات الإصلاح">
+      <button id="continue" type="button">متابعة</button>
+      <button id="retry" type="button">إعادة المحاولة</button>
+      <button id="direct" type="button">فتح مباشر</button>
+      <button id="home" type="button">خيارات التشغيل</button>
+    </div>
+    <p class="note">الفتح المباشر يغادر وضع الإصلاح. قد يطلب تسجيل الدخول مجددًا عند تغيير وضع التشغيل.</p>
+  </section>
+  <button id="help" type="button" hidden>إصلاح التحميل</button>
+  <noscript>تعذّر بدء التطبيق. JavaScript مطلوب لتشغيل Stremio.</noscript>
   <script src="main.js"></script>
 </body>
 </html>
